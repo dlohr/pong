@@ -8,6 +8,9 @@ class Controller {
 	public:
 		Controller();
 
+		void gameLoop();
+
+	private:
 		enum GameState {
 			STATE_MENU,
 			STATE_RUNNING,
@@ -15,21 +18,21 @@ class Controller {
 			STATE_PAUSED
 		};
 
-		void beginGame();
-		void updateGame(sf::RenderWindow* window);
-		void gameOver();
-		void pauseGame();
-		void resumeGame();
-
-		GameState getGameState() { return gameState_; }
-
-	private:
+		sf::RenderWindow window_;
 		GameState gameState_;
-
 		sf::Clock gameClock_;
-
 		sf::Font font_;
 
+		void drawState();                                                           
+    
+		void beginGame();                                                           
+		void updateGame();                                                          
+		
+		void gameOver();                                                            
+		void pauseGame();                                                           
+		void resumeGame();
+
+		void centerText(sf::Text* text, sf::Vector2f windowSize);
 		bool loadResources();
 };
 
