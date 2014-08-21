@@ -6,8 +6,8 @@
 
 class Controller {
 	public:
-		Controller();
-
+		Controller(sf::RenderWindow* window);
+		
 		void gameLoop();
 
 	private:
@@ -18,7 +18,7 @@ class Controller {
 			STATE_PAUSED
 		};
 
-		sf::RenderWindow window_;
+		sf::RenderWindow* window_;
 		GameState gameState_;
 		sf::Clock gameClock_;
 		sf::Font font_;

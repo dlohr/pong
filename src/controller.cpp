@@ -1,7 +1,7 @@
-#include "controller.hpp"
+#include "../lib/controller.hpp"
 
-Controller::Controller() {
-	window_ = sf::RenderWindow(sf::VideoMode(640, 480), "Pong");
+Controller::Controller(sf::RenderWindow* window) {
+	window_ = window;
 	gameState_ = GameState::STATE_MENU;
 	loadResources();
 }
@@ -9,13 +9,13 @@ Controller::Controller() {
 
 
 void Controller::gameLoop() {
-	while (window_.isOpen()) {
+	while (window_->isOpen()) {
 		sf::Event event;
 
-		while (window_.pollEvent(event)) {
+		while (window_->pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed:
-					window_.close();
+					window_->close();
 					break;
 
 				case sf::Event::LostFocus:
@@ -43,9 +43,9 @@ void Controller::gameLoop() {
 				default:
 					break;
 			} // End switch (event.type)
-		} // End while (window_.pollEvent(event))
+		} // End while (window_->pollEvent(event))
 
-		window_.clear(sf::Color::Black);
+		window_->clear(sf::Color::Black);
 
 		switch (gameState_) {
 			case GameState::STATE_MENU:
@@ -72,8 +72,8 @@ void Controller::gameLoop() {
 				break;
 		} // End switch (gameState_)
 
-		window_.display();
-	} // End while (window_.isOpen())
+		window_->display();
+	} // End while (window_->isOpen())
 }
 
 
@@ -105,7 +105,7 @@ void Controller::drawState() {
 	}
 
 	centerText(&text, sf::Vector2f(640.0f, 480.0f));
-	window_.draw(text);
+	window_->draw(text);
 }	
 
 
@@ -144,7 +144,7 @@ void Controller::resumeGame() {
 
 
 
-void centerText(sf::Text* text, sf::Vector2f windowSize) {
+void Controller::centerText(sf::Text* text, sf::Vector2f windowSize) {
 	sf::FloatRect textRect = text->getLocalBounds();
 	text->setOrigin(textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f);
@@ -154,5 +154,5 @@ void centerText(sf::Text* text, sf::Vector2f windowSize) {
 
 
 bool Controller::loadResources() {
-	return (font_.loadFromFile("times-new-roman.ttf"));
+	return (font_.loadFromFile("../res/times-new-roman.ttf"));
 }
