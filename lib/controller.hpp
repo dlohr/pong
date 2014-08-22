@@ -1,11 +1,14 @@
 #ifndef INCLUDED_CONTROLLER_HPP
 #define INCLUDED_CONTROLLER_HPP
 
+#include "ball.hpp"
 #include "paddle.hpp"
+
+#include <random>
 
 class Controller {
 	public:
-		Controller(sf::RenderWindow* window);
+		Controller(sf::RenderWindow* window, unsigned int seed);
 		
 		void gameLoop();
 
@@ -20,8 +23,12 @@ class Controller {
 		sf::RenderWindow* window_;
 		GameState gameState_;
 		sf::Clock gameClock_;
+		sf::Time waitTime_;
 		sf::Font font_;
 
+		std::default_random_engine generator_;
+
+		Ball ball_;
 		Paddle paddle_[2];
 
 		void drawState();                                                           

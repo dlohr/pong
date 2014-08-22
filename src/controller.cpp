@@ -1,7 +1,10 @@
 #include "../lib/controller.hpp"
 
-Controller::Controller(sf::RenderWindow* window) {
+#include <random>
+
+Controller::Controller(sf::RenderWindow* window, unsigned int seed) {
 	window_ = window;
+	generator_.seed(seed);
 	gameState_ = GameState::STATE_MENU;
 	loadResources();
 }
@@ -126,28 +129,46 @@ void Controller::drawState() {
 
 	centerText(&text);
 	window_->draw(text);
+	gameClock_.restart();
 }	
 
 
 
 void Controller::beginGame() {
+	// Center paddles on their respective sides.
 	paddle_[0].centerLeft();
 	paddle_[1].centerRight();
-	// TODO: Initialize values
+	// Center the ball in the middle of the screen.
+	ball_.center();
+	// Randomize the ball's initial trajectory.
+	std::uniform_real_distribution<double> circle(0.0, 2 * M_PI);
+	ball_.setDirection(circle(generator_));
+	// Set gamestate to running.
 	gameState_ = GameState::STATE_RUNNING;
+	// Make sure the game clock starts counting when the game starts.
 	gameClock_.restart();
+	// Set wait time to 3 seconds.
+	waitTime_ = sf::seconds(3.0f);
 }
 
 
 
 void Controller::updateGame() {
 	sf::Time elapsed = gameClock_.restart();
-	// TODO: Perform calculations
+	// Update paddles.
 	for (Paddle& p : paddle_) {
 		p.move(elapsed);
 		window_->draw(p);
 	}
-	// TODO: Check gameover conditions
+	// Update ball.
+	if (waitTime_.asSeconds() <= 0.0f) {
+		ball_.move(elapsed);
+		// TODO: Check for collisions
+		// TODO: Check gameover conditions
+	} else {
+		waitTime_ -= elapsed;
+	}
+	window_->draw(ball_);
 }
 
 

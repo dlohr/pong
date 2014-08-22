@@ -4,8 +4,8 @@ Paddle::Paddle() {
 	this->setSize(sf::Vector2f(25.0f, 100.0f));
 	this->setFillColor(sf::Color::Green);
 	this->setPosition(0.0f, 0.0f);
-	this->direction_ = 0;
-	this->speed_ = 480.0f - this->getSize().y;
+	direction_ = 0;
+	speed_ = 480.0f - this->getSize().y;
 }
 
 
