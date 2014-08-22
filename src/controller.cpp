@@ -54,7 +54,27 @@ void Controller::gameLoop() {
 				break;
 
 			case GameState::STATE_RUNNING:
-				// TODO: Keyboard input. [lohr] Thu 21 Aug 2014 02:07:12 PM CDT
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+					// W is pressed; move Player 1 up.
+					paddle_[0].setDirection(-1);
+				} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+					// S is pressed; move Player 1 down.
+					paddle_[0].setDirection(1);
+				} else {
+					// Neither is pressed; stop moving Player 1.
+					paddle_[0].setDirection(0);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
+					// I is pressed; move Player 2 up.
+					paddle_[1].setDirection(-1);
+				} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
+					// K is pressed; move Player 2 down.
+					paddle_[1].setDirection(1);
+				} else {
+					// Neither is pressed; stop moving Player 2.
+					paddle_[1].setDirection(0);
+				}
+
 				updateGame();
 				break;
 
@@ -104,13 +124,15 @@ void Controller::drawState() {
 			break;
 	}
 
-	centerText(&text, sf::Vector2f(640.0f, 480.0f));
+	centerText(&text);
 	window_->draw(text);
 }	
 
 
 
 void Controller::beginGame() {
+	paddle_[0].centerLeft();
+	paddle_[1].centerRight();
 	// TODO: Initialize values
 	gameState_ = GameState::STATE_RUNNING;
 	gameClock_.restart();
@@ -121,6 +143,10 @@ void Controller::beginGame() {
 void Controller::updateGame() {
 	sf::Time elapsed = gameClock_.restart();
 	// TODO: Perform calculations
+	for (Paddle& p : paddle_) {
+		p.move(elapsed);
+		window_->draw(p);
+	}
 	// TODO: Check gameover conditions
 }
 
@@ -144,11 +170,11 @@ void Controller::resumeGame() {
 
 
 
-void Controller::centerText(sf::Text* text, sf::Vector2f windowSize) {
+void Controller::centerText(sf::Text* text) {
 	sf::FloatRect textRect = text->getLocalBounds();
 	text->setOrigin(textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f);
-	text->setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
+	text->setPosition(640.0f / 2.0f, 480.0f / 2.0f);
 }
 
 

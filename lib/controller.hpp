@@ -1,8 +1,7 @@
 #ifndef INCLUDED_CONTROLLER_HPP
 #define INCLUDED_CONTROLLER_HPP
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+#include "paddle.hpp"
 
 class Controller {
 	public:
@@ -23,6 +22,8 @@ class Controller {
 		sf::Clock gameClock_;
 		sf::Font font_;
 
+		Paddle paddle_[2];
+
 		void drawState();                                                           
     
 		void beginGame();                                                           
@@ -32,7 +33,7 @@ class Controller {
 		void pauseGame();                                                           
 		void resumeGame();
 
-		void centerText(sf::Text* text, sf::Vector2f windowSize);
+		void centerText(sf::Text* text);
 		bool loadResources();
 };
 
