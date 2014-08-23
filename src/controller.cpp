@@ -1,5 +1,6 @@
 #include "../lib/controller.hpp"
 
+#include <cmath>
 #include <random>
 
 Controller::Controller(sf::RenderWindow* window, unsigned int seed) {
@@ -155,20 +156,33 @@ void Controller::beginGame() {
 
 void Controller::updateGame() {
 	sf::Time elapsed = gameClock_.restart();
-	// Update paddles.
-	for (Paddle& p : paddle_) {
-		p.move(elapsed);
-		window_->draw(p);
-	}
+
 	// Update ball.
 	if (waitTime_.asSeconds() <= 0.0f) {
 		ball_.move(elapsed);
-		// TODO: Check for collisions
-		// TODO: Check gameover conditions
+		// Check gameover condition.
+		if (ball_.getPosition().x <= 0.0f || ball_.getPosition().x >= 640.0f) {
+			gameOver();
+		}
 	} else {
 		waitTime_ -= elapsed;
 	}
 	window_->draw(ball_);
+
+	// Update paddles.
+	for (Paddle& p : paddle_) {
+		p.move(elapsed);
+		// Check for collisions.
+		if (p.getGlobalBounds().intersects(ball_.getGlobalBounds())) {
+			float k = 0.5f;
+			float pv = p.getDirection();
+			double vx = -std::cos(ball_.getDirection());
+			double vy = std::sin(ball_.getDirection()) - k * pv;
+			ball_.setDirection(std::atan2(vy, vx));
+			// ball_.increaseSpeed();
+		}
+		window_->draw(p);
+	}
 }
 
 
@@ -181,6 +195,7 @@ void Controller::gameOver() {
 
 void Controller::pauseGame() {
 	gameState_ = GameState::STATE_PAUSED;
+	waitTime_ = sf::seconds(3.0f);
 }
 
 

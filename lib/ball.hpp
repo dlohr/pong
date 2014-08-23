@@ -11,6 +11,9 @@ class Ball : public sf::CircleShape {
 		void setDirection(double direction);
 		void center();
 		void move(sf::Time elapsed);
+		void increaseSpeed();
+		
+		double getDirection() { return direction_; }
 
 	private:
 		double direction_; // Radians

@@ -33,6 +33,16 @@ void Ball::move(sf::Time elapsed) {
 			this->getPosition().y +
 			std::sin(-direction_) * speed_ * elapsed.asSeconds());
 	// Bounce ball off walls.
-	if (this->getPosition().y >= 480.0f) {
+	if (this->getPosition().y >= 480.0f - 2 * this->getRadius() ||
+			this->getPosition().y <= 0.0f) {
+		double vx = std::cos(direction_);
+		double vy = -std::sin(direction_);
+		direction_ = std::atan2(vy, vx);
 	}
+}
+
+
+
+void Ball::increaseSpeed() {
+	speed_ += 5.0f;
 }

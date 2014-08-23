@@ -1,7 +1,7 @@
 #include "../lib/paddle.hpp"
 
 Paddle::Paddle() {
-	this->setSize(sf::Vector2f(25.0f, 100.0f));
+	this->setSize(sf::Vector2f(10.0f, 50.0f));
 	this->setFillColor(sf::Color::Green);
 	this->setPosition(0.0f, 0.0f);
 	direction_ = 0;

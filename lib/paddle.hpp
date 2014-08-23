@@ -13,9 +13,12 @@ class Paddle : public sf::RectangleShape {
 		void centerRight();
 		void move(sf::Time elapsed);
 
+		int getDirection() { return direction_; }
+		float getSpeed() { return speed_; }
+
 	private:
 		int direction_;
-		int speed_;
+		float speed_;
 };
 
 #endif // INCLUDED_PADDLE_HPP
