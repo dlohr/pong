@@ -38,6 +38,13 @@ void Ball::move(sf::Time elapsed) {
 		double vx = std::cos(direction_);
 		double vy = -std::sin(direction_);
 		direction_ = std::atan2(vy, vx);
+		// Make sure the ball is not inside the wall.
+		while (this->getPosition().y >= 480.0f - 2 * this->getRadius()) {
+			this->setPosition(this->getPosition().x, this->getPosition().y - 1.0f);
+		}
+		while (this->getPosition().y <= 0.0f) {
+			this->setPosition(this->getPosition().x, this->getPosition().y + 1.0f);
+		}
 	}
 }
 

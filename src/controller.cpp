@@ -179,7 +179,16 @@ void Controller::updateGame() {
 			double vx = -std::cos(ball_.getDirection());
 			double vy = std::sin(ball_.getDirection()) - k * pv;
 			ball_.setDirection(std::atan2(vy, vx));
-			// ball_.increaseSpeed();
+			// Make sure the ball is not inside the paddle.
+			while (p.getGlobalBounds().intersects(ball_.getGlobalBounds())) {
+				if (ball_.getPosition().x <= 640.0f / 2.0f) {
+					ball_.setPosition(ball_.getPosition().x + 1.0f,
+						ball_.getPosition().y);
+				} else {
+					ball_.setPosition(ball_.getPosition().x - 1.0f,
+						ball_.getPosition().y);
+				}
+			}
 		}
 		window_->draw(p);
 	}
